@@ -1,0 +1,30 @@
+{
+  "name": "koa-app",
+  "version": "1.0.0",
+  "description": "kop-app",
+  "main": "index.js",
+  "scripts": {
+    "start": "cross-env NODE_ENV=production nodemon app",
+    "dev": "nodemon app"
+  },
+  "keywords": [
+    "koa-app"
+  ],
+  "author": "wangyahao",
+  "license": "ISC",
+  "devDependencies": {
+    "cross-env": "^7.0.2",
+    "koa": "^2.13.0",
+    "nodemon": "^2.0.4"
+  },
+  "dependencies": {
+    "jsonwebtoken": "^8.5.1",
+    "koa-body": "^4.2.0",
+    "koa-json-error": "^3.1.2",
+    "koa-jwt": "^4.0.0",
+    "koa-parameter": "^3.0.1",
+    "koa-router": "^9.4.0",
+    "koa-static": "^5.0.0",
+    "mongoose": "^5.10.6"
+  }
+}
