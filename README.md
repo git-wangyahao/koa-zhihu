@@ -1,3 +1,16 @@
+### 使用说明
+# install dependencies
+npm install
+
+# serve with hot reload at localhost:8080
+npm run dev
+
+# build for production with minification
+npm run build
+
+
+### 开发文档
+
 #### 安装路由
 npm i koa-router --save
 #### 安装解析请求体
