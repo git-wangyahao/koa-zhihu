@@ -1,9 +1,13 @@
 //  引入 数据模式/结构
 const User = require('../models/users')
+const Questions = require('../models/questions')
+const Answers = require('../models/answer')
 // 引入jwt
 const jsonwebtoken = require('jsonwebtoken')
 // 引入密码
-const  { secret } = require('../config')
+const  { secret } = require('../config');
+const { QueryCursor } = require('mongoose');
+
 // 错误备注
 // 之前接口一直报错，原因是mongdb 方法需要 数据模型调用，我没有调用
 
@@ -244,11 +248,6 @@ class UserCtl {
 
     ctx.body = user.followingTopics
   }
-
-
-
-
-
   /**
    * 关注用户
    * 关注话题，关注话题和关注人逻辑差不多
@@ -281,7 +280,107 @@ async unfollowTopic (ctx) {
   ctx.status = 204
 }
 
+  // 问题列表
+async listQuestions(ctx) {
+  console.log( "eee", ctx.params.id )
+  const questions = await Questions.find({ questioner: ctx.params.id })
+  ctx.body = questions
+}
 
+/**
+ * 赞 
+ */
+// 列出喜欢的答案列表
+async listLikingAnswers(ctx) {
+  // 注 select 作用是 选择 默认不查询的，populate 取出指定字段
+
+  const user = await User.findById(ctx.params.id).select("+likingAnswers").populate('likingAnswers')
+  console.log("user",user)
+  if(!user) {
+    ctx.throw(404,"答案不存在")
+  }
+
+  ctx.body = user.likingAnswers
+}
+
+  async likeAnswer (ctx , next) {
+    // 根据自己的ID 查询出个人信息 // 改为中间件
+    const me = await User.findById(ctx.state.user._id).select('+likingAnswers') 
+    console.log("ctx11",me) 
+    // 把点赞者的id 放在自己的数组中
+    if ( !me.likingAnswers.map(id => id.toString()).includes(ctx.params.id) ) {
+      me.likingAnswers.push(ctx.params.id)
+      me.save()
+      // 修改 answer 投票数
+      console.log("咱答案")
+      await Answers.findOneAndUpdate(ctx.params.id, { $inc: { voteCount : 1 } })
+      console.log("咱答案111")
+    }
+    // 保存在数据库中
+    ctx.status = 204
+    await next()
+  }
+
+  // 取消赞
+  async unlikeAnswer (ctx) {
+    // 根据自己的ID 查询出个人信息
+    const me = await User.findById(ctx.state.user._id).select('+likingAnswers') 
+    const index = me.likingAnswers.map( id => id.toString()).indexOf(ctx.params.id)
+    // 把关注者的id 放在自己的数组中
+    if ( index > -1 ) {
+      me.likingAnswers.splice(index, 1);
+      me.save()
+    }
+    // 保存在数据库中
+    ctx.status = 204
+  }
+
+
+
+  /**
+   *  踩
+   */
+  // 列出喜欢的答案列表
+  async listDisLikingAnswers(ctx) {
+    // 注 select 作用是 选择 默认不查询的，populate 取出指定字段
+    
+    const user = await User.findById(ctx.params.id).select("+dislikingAnswers").populate('dislikingAnswers')
+
+    if(!user) {
+      ctx.throw(404,"用户不存在")
+    }
+
+    ctx.body = user.dislikingAnswers
+  }
+
+  async dislikeAnswer (ctx ,next) {
+    // 根据自己的ID 查询出个人信息
+    const me = await User.findById(ctx.state.user._id).select('+dislikingAnswers') 
+    console.log("ctx11",me) 
+    // 把关注者的id 放在自己的数组中
+    if ( !me.dislikingAnswers.map(id => id.toString()).includes(ctx.params.id) ) {
+      me.dislikingAnswers.push(ctx.params.id)
+      me.save()
+      // 修改 answer 投票数 
+    }
+    // 保存在数据库中
+    ctx.status = 204
+    await next()
+  }
+
+   // 取消踩
+  async undislikeAnswer (ctx) {
+    // 根据自己的ID 查询出个人信息
+    const me = await User.findById(ctx.state.user._id).select('+dislikingAnswers') 
+    const index = me.dislikingAnswers.map( id => id.toString()).indexOf(ctx.params.id)
+    // 把关注者的id 放在自己的数组中
+    if ( index > -1 ) {
+      me.dislikingAnswers.splice(index, 1);
+      me.save()
+    }
+    // 保存在数据库中
+    ctx.status = 204
+  }
 
 }
 module.exports = new UserCtl()

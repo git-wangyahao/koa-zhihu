@@ -7,8 +7,10 @@ const  { secret } = require('../config')
 // 定义跟路由
 const router = new Router({prefix:'/users'})
 // 引入控制器 
-const { find, findById, create, update ,del ,login ,checkOwner ,listFollowing ,follow ,unfollow , listFollower ,checkUserExist , followTopic , unfollowTopic ,listFollowingTopics} = require('../controllers/users')
+const { find, findById, create, update ,del ,login ,checkOwner ,listFollowing ,follow ,unfollow , listFollower ,checkUserExist , followTopic , unfollowTopic ,    listFollowingTopics ,listQuestions, listLikingAnswers, likeAnswer, unlikeAnswer, listDisLikingAnswers, dislikeAnswer, undislikeAnswer , } = require('../controllers/users')
 const { checkTopicExist } = require('../controllers/topics')
+// 检查答案是否存在
+const { checkAnswerExist } = require('../controllers/answers')
 
 /**
  * 
@@ -45,6 +47,30 @@ router.get('/listFollowingTopics/:id' , listFollowingTopics )
 router.put('/followingTopics/:id', auth ,followTopic )
 // 取消关注话题
 router.delete('/followingTopics/:id', auth  ,unfollowTopic )
+// 获取问题列表
+router.get('/:id/listQuestions',auth , listQuestions)
+/**
+ *  赞和踩
+ * // 赞取消踩,踩 取消赞
+ */
+// 获取赞广告  id 是用户id
+router.get('/linkingAnswers/:id' , listLikingAnswers )
+// 点赞 id 是答案id
+router.put('/linkingAnswers/:id', auth , checkAnswerExist ,likeAnswer ,undislikeAnswer )
+// 取消赞  id 是答案id
+router.delete('/linkingAnswers/:id', auth  ,unlikeAnswer )
+
+// 获取踩  
+router.get('/dislinkingAnswers/:id' , listDisLikingAnswers )
+// 踩他
+router.put('/dislinkingAnswers/:id', auth , checkAnswerExist ,dislikeAnswer , unlikeAnswer)
+// 取消踩
+router.delete('/dislinkingAnswers/:id', auth , checkAnswerExist ,undislikeAnswer )
+
+
+
+
+
 
 module.exports = router
 

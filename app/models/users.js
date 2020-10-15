@@ -66,8 +66,20 @@ const userSchema = new Schema({
     // 引用的写法
     type: [ { type :Schema.Types.ObjectId , ref: 'Topics'} ],
     select: false,
-  }
+  },
 
+  // 赞的答案
+  likingAnswers:{
+      // 引用的写法
+      type: [ { type :Schema.Types.ObjectId , ref: 'Answers'} ],
+      select: false,
+  },
+  // 踩的答案
+  dislikingAnswers:{
+    // 引用的写法
+    type: [ { type :Schema.Types.ObjectId , ref: 'Answers'} ],
+    select: false,
+  }
   // 
   // password: { type:String, required: true , select:false},
   // select:false 查询的时候是否显示这个字段，查询的时候可以使用语法单独查出来

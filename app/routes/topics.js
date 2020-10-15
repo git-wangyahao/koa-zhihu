@@ -13,14 +13,17 @@ const router = new Router({prefix:'/topics'})
 const auth = jwt({secret})
 
 // 引入控制器
-const {find, findById ,create, update ,checkTopicExist , listFollower } = require('../controllers/topics')
+const {find, findById ,create, update ,checkTopicExist , listFollower ,listQuestion} = require('../controllers/topics')
 // 使用路由 处理主页
 router.get('/',find)
 router.post('/', auth ,create)
 router.get('/:id', checkTopicExist ,findById)
 router.patch('/:id', auth , checkTopicExist ,update)
 // router.get('/:id/followers', checkTopicExist , listFollower )
-router.get('/:id/followers',auth , checkTopicExist ,listFollower)
+router.get('/:id/followers',auth , checkTopicExist ,listFollower) 
+
+// 话题的问题列表
+router.get('/:id/questions',auth , checkTopicExist , listQuestion )
 
 // 导出
 module.exports = router 

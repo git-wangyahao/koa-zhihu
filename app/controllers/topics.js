@@ -1,6 +1,7 @@
 //  引入 数据模式/结构
 const Topics = require('../models/topics')
 const User = require('../models/users')
+const Questions = require('../models/questions')
 // 定义一个类
 class TopicsCtl { 
   // 中间件
@@ -74,6 +75,12 @@ class TopicsCtl {
   async listFollower(ctx) {
     const users = await User.find({ followingTopics: ctx.params.id })
     ctx.body = users
+  }
+
+  // 列出问题
+  async listQuestion(ctx) {
+    const questions = await Questions.find({ topics: ctx.params.id })
+    ctx.body = questions
   }
 
 }
