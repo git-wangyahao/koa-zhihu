@@ -79,6 +79,13 @@ const userSchema = new Schema({
     // 引用的写法
     type: [ { type :Schema.Types.ObjectId , ref: 'Answers'} ],
     select: false,
+  },
+
+   // 收藏的答案
+   collectingAnswers:{
+    // 引用的写法
+    type: [ { type :Schema.Types.ObjectId , ref: 'Answers'} ],
+    select: false,
   }
   // 
   // password: { type:String, required: true , select:false},

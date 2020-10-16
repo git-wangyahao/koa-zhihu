@@ -7,7 +7,33 @@ const  { secret } = require('../config')
 // 定义跟路由
 const router = new Router({prefix:'/users'})
 // 引入控制器 
-const { find, findById, create, update ,del ,login ,checkOwner ,listFollowing ,follow ,unfollow , listFollower ,checkUserExist , followTopic , unfollowTopic ,    listFollowingTopics ,listQuestions, listLikingAnswers, likeAnswer, unlikeAnswer, listDisLikingAnswers, dislikeAnswer, undislikeAnswer , } = require('../controllers/users')
+const { 
+  find, 
+  findById,
+  create, 
+  update,
+  del ,
+  login ,
+  checkOwner ,
+  listFollowing ,
+  follow ,
+  unfollow , 
+  listFollower ,
+  checkUserExist , 
+  followTopic , 
+  unfollowTopic,    
+  listFollowingTopics ,
+  listQuestions, 
+  listLikingAnswers, 
+  likeAnswer, 
+  unlikeAnswer, 
+  listDisLikingAnswers, 
+  dislikeAnswer, 
+  undislikeAnswer , 
+  listcollectingAnswers,
+  collectAnswer,
+  uncollectAnswer
+} = require('../controllers/users')
 const { checkTopicExist } = require('../controllers/topics')
 // 检查答案是否存在
 const { checkAnswerExist } = require('../controllers/answers')
@@ -67,6 +93,16 @@ router.put('/dislinkingAnswers/:id', auth , checkAnswerExist ,dislikeAnswer , un
 // 取消踩
 router.delete('/dislinkingAnswers/:id', auth , checkAnswerExist ,undislikeAnswer )
 
+/**
+ * 收藏答案 和 取消收藏答案
+ */
+
+ // 获取答案
+router.get('/collectingAnswers/:id' , listcollectingAnswers )
+// 收藏答案
+router.put('/collectingAnswers/:id', auth , checkAnswerExist ,collectAnswer ,)
+// 取消受答案
+router.delete('/collectingAnswers/:id', auth , checkAnswerExist ,uncollectAnswer )
 
 
 

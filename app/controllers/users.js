@@ -382,5 +382,49 @@ async listLikingAnswers(ctx) {
     ctx.status = 204
   }
 
+
+   /**
+   * 收藏的答案
+   */
+  // 收藏喜欢的答案列表
+  async listcollectingAnswers(ctx) {
+    // 注 select 作用是 选择 默认不查询的，populate 取出指定字段
+    
+    const user = await User.findById(ctx.params.id).select("+collectingAnswers").populate('collectingAnswers')
+
+    if(!user) {
+      ctx.throw(404,"用户不存在")
+    }
+
+    ctx.body = user.collectingAnswers
+  }
+
+  async collectAnswer (ctx ,next) {
+    // 根据自己的ID 查询出个人信息
+    const me = await User.findById(ctx.state.user._id).select('+collectingAnswers') 
+    // 把关注者的id 放在自己的数组中
+    if ( !me.collectingAnswers.map(id => id.toString()).includes(ctx.params.id) ) {
+      me.collectingAnswers.push(ctx.params.id)
+      me.save()
+      // 修改 answer 投票数 
+    }
+    // 保存在数据库中
+    ctx.status = 204
+    await next()
+  }
+
+   // 取消踩
+  async uncollectAnswer (ctx) {
+    // 根据自己的ID 查询出个人信息
+    const me = await User.findById(ctx.state.user._id).select('+collectingAnswers') 
+    const index = me.collectingAnswers.map( id => id.toString()).indexOf(ctx.params.id)
+    // 把关注者的id 放在自己的数组中
+    if ( index > -1 ) {
+      me.collectingAnswers.splice(index, 1);
+      me.save()
+    }
+    // 保存在数据库中
+    ctx.status = 204
+  }
 }
 module.exports = new UserCtl()

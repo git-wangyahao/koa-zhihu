@@ -72,6 +72,11 @@ cd games
 cd ../代表回到上一个目录
 cd / 代表回到根目录
 
+#### 服务器管理 教程
+如何开启ssh链接 https://blog.csdn.net/m0_37450089/article/details/79595713
+Linux 下的 vim 编辑器 的使用
+
+
 
  
 
