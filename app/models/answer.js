@@ -17,7 +17,7 @@ const answerSchema = new Schema({
   questionId:{ type: String, required: true } , // 问题id
   // 记录投票数 -- 赞 或者 踩 
   voteCount: { type: Number, required: true , default: 0}
-}) 
+}, { timestamps: true }) 
 
 // 设置用户模型 ,并导出
 module.exports = model('Answers', answerSchema );

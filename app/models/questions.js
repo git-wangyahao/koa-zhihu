@@ -18,7 +18,7 @@ const questionSchema = new Schema({
     select:false
   }
   // 问题的话题一般不是很多
-}) 
+}, { timestamps: true }) 
 
 // 设置用户模型 ,并导出
 module.exports = model('Questions', questionSchema );

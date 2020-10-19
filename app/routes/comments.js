@@ -23,3 +23,6 @@ router.delete('/:id', auth , checkCommentExist , checkCommentator, del)
 
 // 导出
 module.exports = router 
+
+// 二级评论
+// http://localhost:9000/question/5f86c5f94b38085f111d5e72/answers/5f7ea9c23fcea662c67136b4/comments/?rootCommentId=5f895e5cb8ae1190e6dbfdac 

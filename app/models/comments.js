@@ -21,7 +21,9 @@ const commentsSchema = new Schema({
   replyTo: { 
     type: Schema.Types.ObjectId , ref: "User",
   }
-}) 
+}, { timestamps: true }) 
+
+//{ timestamps: true } 设置时间戳为true  则每一块就会添加事件
 
 // 设置用户模型 ,并导出
 module.exports = model('Comments', commentsSchema );

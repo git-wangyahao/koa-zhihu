@@ -90,7 +90,7 @@ const userSchema = new Schema({
   // 
   // password: { type:String, required: true , select:false},
   // select:false 查询的时候是否显示这个字段，查询的时候可以使用语法单独查出来
-}) 
+}, { timestamps: true }) 
 
 // 设置用户模型 ,并导出
 module.exports = model('User', userSchema );

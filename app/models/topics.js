@@ -13,7 +13,7 @@ const topicsSchema = new Schema({
   name:{ type:String, required: false  },
   avatar_url: { type:String ,select:false},
   introduction: { type:String , select:false }
-}) 
+}, { timestamps: true }) 
 
 // 设置用户模型 ,并导出
 module.exports = model('Topics', topicsSchema );
