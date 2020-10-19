@@ -105,9 +105,6 @@ router.put('/collectingAnswers/:id', auth , checkAnswerExist ,collectAnswer ,)
 router.delete('/collectingAnswers/:id', auth , checkAnswerExist ,uncollectAnswer )
 
 
-
-
-
 module.exports = router
 
 // 备注
